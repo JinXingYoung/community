@@ -1,32 +1,50 @@
-# Proposal: `Support multi-DB in harbor`
+# Proposal: `Adapt Multiple Type of Database for Harbor`
 
-Author: `Yvonne / @JinxingYoung, Yiyang / @YiyangHuang, Minglu / @Mingluhan`
+Author:
 
-Discussion:
+- Yvonne [@JinXingYoung](https://github.com/JinXingYoung)
+- Yiyang Huang [@hyy0322](https://github.com/hyy0322)
+- Minglu []()
+- De Chen [@cd1989](https://github.com/cd1989)
 
-- [DB adaptable issue](https://github.com/goharbor/harbor/issues/6534)
+Links:
+
+- Discussion: [goharbor/harbor#6534](https://github.com/goharbor/harbor/issues/6534)
+- Related PR: [goharbor/harbor#14265](https://github.com/goharbor/harbor/pull/14265)
 
 ## Abstract
 
-Expand DB support for multi-DB, initially mysql and mariadb.
+Implement Database interface, so that Harbor can support multiple type of Database.
+
+MariaDB/MySQL will be supported and tested at first. Other type of Database like Oracle, SQLServer are welcomed to support by community.
 
 ## Background
 
-There are many issues that discuss the need to support multiple databases. Currently, only PostgreSQL is supported, limiting the use of many users.
+There are many issues discussing the requirement for Harbor supporting multiple type of database in community.
 
-Since Harbor 2.0 use trivy instead of clair，there‘s no requirement to use PostgreSQL. A lot of people want to use mysql or mariadb. it's good to support mysql/mariaDB in external_database mode initially.
+Currently, only PostgreSQL is supported by Harbor. For maintenance perspective, there are certain amount of users are more familiar with MariaDB/MySQL. They prefer to use MariaDB/MySQL instead of PostgreSQL to keep there production environment stable.
+
+As we all know that Harbor used MySQL before. But scanner clair use PostgreSQL as database. In order to keep consistency with clair and reduce maintenance difficulties. Harbor unified database using PostgreSQL.
+
+Since Harbor v2.0 use trivy as default scanner instead of clair，there's no strongly requirement to use PostgreSQL anymore. Therefore, it is possible to adapt multiple kind of database now.
 
 ## Proposal
 
-In order to support different DB to harbor we propose support mariadb and mysql in Harbor which can meet the needs of many users. 
+Implement Database interface to support MariaDB/MySQL.
 
 ### Goals
 
-- Abstract DAO layer for different databases
-- Support MariaDB 10.5.9
-- Support MySQL 8.0
-- Keep backward compatibility for PostgreSQL
-- Migrate from PostgreSQL to MariaDB/MySQL
+- Keep using PostgreSQL as default database. The Implementation will be compatible with current version of Harbor.
+- Abstract DAO layer for different type of databases, modify raw SQL in code if necessary.
+- Verify compatibility for mariaDB 10.5.9 / MySQL 8.0.
+- Provide migration tool or guide for users to migrate data from PostgreSQL to mariaDB/MySQL.
+
+### Non-Goals
+
+- Support other type of database. It will be supported in later version.
+- Implement Mariadb/MySQL operator for internal database case.
+
+## Implementation
 
 ### Overview
 
@@ -38,7 +56,7 @@ In order to support different DB to harbor we propose support mariadb and mysql 
 
 ![logic.png](images/multidb/logic.png)
 
-### Database Compatibility
+### Database Compatibility Testing
 
 **MariaDB 10.5.9**
 
@@ -95,21 +113,11 @@ sql file | Compatibility test | comment
  | 0080_2.5.0_schema.up.sql | Pass | xxx 
 
 
-### Database Migration
-
-Migrate from PostgreSQL to MariaDB/MySQL
-
-Tool, xxxx
-
-```
-add sth about migration tool
-```
-
 ### How To Use
 
-* Users can configure database type to use mysql/mariadb in external_database mode, postgresql is used by default.
+Users can configure database type to use Mariadb/MySQL in external_database mode, PostgreSQL is used by default.
 
-set harbor_db_type config under external_database and db type under notary db config:
+Set harbor_db_type configuration under external_database and db type under notary db configuration:
 ```
 # Uncomment external_database if using external database.
 # external_database:
@@ -131,14 +139,17 @@ set harbor_db_type config under external_database and db type under notary db co
 #     ...
 ```
 
-## Non-Goals
-
-* Support other databases, such as MongoDB.
-* Implement Mysql/Mariadb operator for internal database case.
-
 ## Rationale
 
-* Why not expand other DBs
+### Migration
 
-  * mysql or mariaDB is more popular.
-  * In addition, versions before 1.6 are using mysql, some user may want to stick to the old ways.
+#### Write a document Using official migration tool
+
+MySQL community provide a [tool](https://dev.mysql.com/doc/workbench/en/wb-migration-database-postgresql.html) to migrate data.(Need further test)
+
+#### Write a script to migrate data.
+
+1. Define data models for postgreSQL and MariaDB/MySQL.
+2. Read data from postgreSQL and map to data model.
+3. Transfer postgreSQL data model to MariaDB/MySQL data model.
+4. Write data to MariaDB/MySQL database

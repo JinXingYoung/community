@@ -18,11 +18,77 @@ Since Harbor 2.0 use trivy instead of clair，there‘s no requirement to use Po
 
 ## Proposal
 
+### Goals
+
+- Abstract DAO layer for different databases
+- Support MariaDB xxx
+- Support MySQL xxx
+- Keep backward compacitiy for PostgreSQL
+- Migrate from PostgreSQL to MariaDB/MySQL
+
 In order to support different DB to harbor we propose support mariadb and mysql in Harbor which can meet the needs of many users. 
 
 Verify compatibility based on versions mysql 8.0 and mariadb 10.5.9.
 
-### Applicable scenario
+### Overview
+
+
+```
+todo add diagram(组建X数据库总体图)
+```
+
+### Component Detail
+
+**Core**
+```
+core Database 代码逻辑图
+(initDatabase 分支走向，
+某些业务sql语句不兼容的则判断database driver适配sql语句)
+```
+
+**Exporter**
+
+```
+exporter database 代码逻辑图
+(initDatabase 分支走向，
+某些业务sql语句不兼容的则判断database driver适配sql语句)
+```
+
+**Notary**
+```
+图(根据数据库类型使用不同配置文件启动notary)
+```
+
+### Database Compatibility
+
+**MariaDB xxxx**
+f1 Pass xxx
+f2 Pass xxx
+f3 Pass xxx
+
+**MySQL xxxxx**
+f1 Pass xxx
+f2 Pass xxx
+f3 Pass xxx
+
+### Database Migration
+
+Migrate from PostgreSQL to MariaDB/MySQL
+
+Tool, xxxx
+
+* Expand DB support for mysql and mariaDB, compatible with the PostgreSQL. User can chose the suitable DB to use.
+
+- [Problems solved for compatibility](https://docs.qq.com/doc/DVVV2VHV4eHNNbmdi)
+
+* Provide data migration documentation and tool to migrate from PostgreSQL to Mysql/mariaDB in same harbor version.
+
+```
+add sth about migration tool
+```
+
+
+### How To Use
 
 * Users can configure database type to use mysql/mariadb in external_database mode, postgresql is used by default.
 
@@ -48,55 +114,10 @@ set harbor_db_type config under external_database and db type under notary db co
 #     ...
 ```
 
-### component diagram
-
-```
-todo add diagram(组建X数据库总体图)
-```
-
-### core
-```
-core Database 代码逻辑图
-(initDatabase 分支走向，
-某些业务sql语句不兼容的则判断database driver适配sql语句)
-```
-
-### exporter
-```
-exporter database 代码逻辑图
-(initDatabase 分支走向，
-某些业务sql语句不兼容的则判断database driver适配sql语句)
-```
-
-### notary
-```
-图(根据数据库类型使用不同配置文件启动notary)
-```
-
-### database Compatibility
-
-* Expand DB support for mysql and mariaDB, compatible with the PostgreSQL. User can chose the suitable DB to use.
-
-- [Problems solved for compatibility](https://docs.qq.com/doc/DVVV2VHV4eHNNbmdi)
-
-* Provide data migration documentation and tool to migrate from PostgreSQL to Mysql/mariaDB in same harbor version.
-
-```
-add sth about migration tool
-```
-
-
-### work with mariadb 10.5.9
-```
-todo
-成功运行图
-core,exporter,notary
-```
-
 ## Non-Goals
 
-* support databases In addition to mysql/mariaDB, such as mongoDB etc.
-* support internal database with mysql/mariadb
+* Support other databases, such as MongoDB.
+* Implement Mysql/Mariadb operator for internal database case.
 
 ## Rationale
 

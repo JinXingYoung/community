@@ -18,58 +18,82 @@ Since Harbor 2.0 use trivy instead of clair，there‘s no requirement to use Po
 
 ## Proposal
 
+In order to support different DB to harbor we propose support mariadb and mysql in Harbor which can meet the needs of many users. 
+
 ### Goals
 
 - Abstract DAO layer for different databases
-- Support MariaDB xxx
-- Support MySQL xxx
-- Keep backward compacitiy for PostgreSQL
+- Support MariaDB 10.5.9
+- Support MySQL 8.0
+- Keep backward compatibility for PostgreSQL
 - Migrate from PostgreSQL to MariaDB/MySQL
-
-In order to support different DB to harbor we propose support mariadb and mysql in Harbor which can meet the needs of many users. 
-
-Verify compatibility based on versions mysql 8.0 and mariadb 10.5.9.
 
 ### Overview
 
-
-```
-todo add diagram(组建X数据库总体图)
-```
+![overview.png](images/multidb/overview.png)
 
 ### Component Detail
 
-**Core**
-```
-core Database 代码逻辑图
-(initDatabase 分支走向，
-某些业务sql语句不兼容的则判断database driver适配sql语句)
-```
+**Core/Exporter/Notary** 
 
-**Exporter**
-
-```
-exporter database 代码逻辑图
-(initDatabase 分支走向，
-某些业务sql语句不兼容的则判断database driver适配sql语句)
-```
-
-**Notary**
-```
-图(根据数据库类型使用不同配置文件启动notary)
-```
+![logic.png](images/multidb/logic.png)
 
 ### Database Compatibility
 
-**MariaDB xxxx**
-f1 Pass xxx
-f2 Pass xxx
-f3 Pass xxx
+**MariaDB 10.5.9**
 
-**MySQL xxxxx**
-f1 Pass xxx
-f2 Pass xxx
-f3 Pass xxx
+sql file | Compatibility test | comment
+------------|------------|------------
+ | 0001_initial_schema.up.sql | Pass | xxx
+ | 0002_1.7.0_schema.up.sql | Pass | xxx
+ | 0003_add_replication_op_uuid.up.sql | Pass | xxx 
+ | 0004_1.8.0_schema.up.sql | Pass | xxx 
+ | 0005_1.8.2_schema.up.sql | Pass | xxx 
+ | 0010_1.9.0_schema.up.sql | Pass | xxx 
+ | 0011_1.9.1_schema.up.sql | Pass | xxx 
+ | 0012_1.9.4_schema.up.sql | Pass | xxx 
+ | 0015_1.10.0_schema.up.sql | Pass | xxx 
+ | 0030_2.0.0_schema.up.sql | Pass | xxx 
+ | 0031_2.0.3_schema.up.sql | Pass | xxx 
+ | 0040_2.1.0_schema.up.sql | Pass | xxx 
+ | 0041_2.1.4_schema.up.sql | Pass | xxx 
+ | 0050_2.2.0_schema.up.sql | Pass | xxx 
+ | 0051_2.2.1_schema.up.sql | Pass | xxx 
+ | 0052_2.2.2_schema.up.sql | Pass | xxx 
+ | 0053_2.2.3_schema.up.sql | Pass | xxx 
+ | 0060_2.3.0_schema.up.sql | Pass | xxx 
+ | 0061_2.3.4_schema.up.sql | Pass | xxx 
+ | 0070_2.4.0_schema.up.sql | Pass | xxx 
+ | 0071_2.4.2_schema.up.sql | Pass | xxx 
+ | 0080_2.5.0_schema.up.sql | Pass | xxx 
+
+**MySQL 8.0**
+
+sql file | Compatibility test | comment
+------------|------------|------------
+ | 0001_initial_schema.up.sql | Pass | xxx
+ | 0002_1.7.0_schema.up.sql | Pass | xxx
+ | 0003_add_replication_op_uuid.up.sql | Pass | xxx 
+ | 0004_1.8.0_schema.up.sql | Pass | xxx 
+ | 0005_1.8.2_schema.up.sql | Pass | xxx 
+ | 0010_1.9.0_schema.up.sql | Pass | xxx 
+ | 0011_1.9.1_schema.up.sql | Pass | xxx 
+ | 0012_1.9.4_schema.up.sql | Pass | xxx 
+ | 0015_1.10.0_schema.up.sql | Pass | xxx 
+ | 0030_2.0.0_schema.up.sql | Pass | xxx 
+ | 0031_2.0.3_schema.up.sql | Pass | xxx 
+ | 0040_2.1.0_schema.up.sql | Pass | xxx 
+ | 0041_2.1.4_schema.up.sql | Pass | xxx 
+ | 0050_2.2.0_schema.up.sql | Pass | xxx 
+ | 0051_2.2.1_schema.up.sql | Pass | xxx 
+ | 0052_2.2.2_schema.up.sql | Pass | xxx 
+ | 0053_2.2.3_schema.up.sql | Pass | xxx 
+ | 0060_2.3.0_schema.up.sql | Pass | xxx 
+ | 0061_2.3.4_schema.up.sql | Pass | xxx 
+ | 0070_2.4.0_schema.up.sql | Pass | xxx 
+ | 0071_2.4.2_schema.up.sql | Pass | xxx 
+ | 0080_2.5.0_schema.up.sql | Pass | xxx 
+
 
 ### Database Migration
 
@@ -77,16 +101,9 @@ Migrate from PostgreSQL to MariaDB/MySQL
 
 Tool, xxxx
 
-* Expand DB support for mysql and mariaDB, compatible with the PostgreSQL. User can chose the suitable DB to use.
-
-- [Problems solved for compatibility](https://docs.qq.com/doc/DVVV2VHV4eHNNbmdi)
-
-* Provide data migration documentation and tool to migrate from PostgreSQL to Mysql/mariaDB in same harbor version.
-
 ```
 add sth about migration tool
 ```
-
 
 ### How To Use
 

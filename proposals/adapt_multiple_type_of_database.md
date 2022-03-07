@@ -52,38 +52,11 @@ Implement Database interface to support MariaDB/MySQL.
 
 ### Component Detail
 
-**Core/Exporter/Notary** 
+**Core/JobService/Exporter/Notary** 
 
 ![logic.png](images/multidb/logic.png)
 
 ### Database Compatibility Testing
-
-**MariaDB 10.5.9**
-
-sql file | Compatibility test | comment
-------------|------------|------------
- | 0001_initial_schema.up.sql | Pass | xxx
- | 0002_1.7.0_schema.up.sql | Pass | xxx
- | 0003_add_replication_op_uuid.up.sql | Pass | xxx 
- | 0004_1.8.0_schema.up.sql | Pass | xxx 
- | 0005_1.8.2_schema.up.sql | Pass | xxx 
- | 0010_1.9.0_schema.up.sql | Pass | xxx 
- | 0011_1.9.1_schema.up.sql | Pass | xxx 
- | 0012_1.9.4_schema.up.sql | Pass | xxx 
- | 0015_1.10.0_schema.up.sql | Pass | xxx 
- | 0030_2.0.0_schema.up.sql | Pass | xxx 
- | 0031_2.0.3_schema.up.sql | Pass | xxx 
- | 0040_2.1.0_schema.up.sql | Pass | xxx 
- | 0041_2.1.4_schema.up.sql | Pass | xxx 
- | 0050_2.2.0_schema.up.sql | Pass | xxx 
- | 0051_2.2.1_schema.up.sql | Pass | xxx 
- | 0052_2.2.2_schema.up.sql | Pass | xxx 
- | 0053_2.2.3_schema.up.sql | Pass | xxx 
- | 0060_2.3.0_schema.up.sql | Pass | xxx 
- | 0061_2.3.4_schema.up.sql | Pass | xxx 
- | 0070_2.4.0_schema.up.sql | Pass | xxx 
- | 0071_2.4.2_schema.up.sql | Pass | xxx 
- | 0080_2.5.0_schema.up.sql | Pass | xxx 
 
 **MySQL 8.0**
 
@@ -112,6 +85,32 @@ sql file | Compatibility test | comment
  | 0071_2.4.2_schema.up.sql | Pass | xxx 
  | 0080_2.5.0_schema.up.sql | Pass | xxx 
 
+**MariaDB 10.5.9**
+
+sql file | Compatibility test | comment
+------------|------------|------------
+ | 0001_initial_schema.up.sql | Pass | xxx
+ | 0002_1.7.0_schema.up.sql | Pass | xxx
+ | 0003_add_replication_op_uuid.up.sql | Pass | xxx 
+ | 0004_1.8.0_schema.up.sql | Pass | xxx 
+ | 0005_1.8.2_schema.up.sql | Pass | xxx 
+ | 0010_1.9.0_schema.up.sql | Pass | xxx 
+ | 0011_1.9.1_schema.up.sql | Pass | xxx 
+ | 0012_1.9.4_schema.up.sql | Pass | xxx 
+ | 0015_1.10.0_schema.up.sql | Pass | xxx 
+ | 0030_2.0.0_schema.up.sql | Pass | xxx 
+ | 0031_2.0.3_schema.up.sql | Pass | xxx 
+ | 0040_2.1.0_schema.up.sql |  | xxx 
+ | 0041_2.1.4_schema.up.sql | Pass | xxx 
+ | 0050_2.2.0_schema.up.sql | Pass | xxx 
+ | 0051_2.2.1_schema.up.sql | Pass | xxx 
+ | 0052_2.2.2_schema.up.sql | Pass | xxx 
+ | 0053_2.2.3_schema.up.sql | Pass | xxx 
+ | 0060_2.3.0_schema.up.sql | Pass | xxx 
+ | 0061_2.3.4_schema.up.sql | Pass | xxx 
+ | 0070_2.4.0_schema.up.sql | Pass | xxx 
+ | 0071_2.4.2_schema.up.sql | Pass | xxx 
+ | 0080_2.5.0_schema.up.sql | Pass | xxx 
 
 ### How To Use
 

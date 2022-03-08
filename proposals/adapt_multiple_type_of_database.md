@@ -4,8 +4,7 @@ Author:
 
 - Yvonne [@JinXingYoung](https://github.com/JinXingYoung)
 - Yiyang Huang [@hyy0322](https://github.com/hyy0322)
-- Minglu []()
-- De Chen [@cd1989](https://github.com/cd1989)
+- Minglu [@ConnieHan2019](18302010059@fudan.edu.cn)
 
 Links:
 

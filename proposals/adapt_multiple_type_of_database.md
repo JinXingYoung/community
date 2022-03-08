@@ -9,44 +9,42 @@ Author:
 
 Links:
 
-- Discussion: [goharbor/harbor#6534](https://github.com/goharbor/harbor/issues/6534)
-- Related PR: [goharbor/harbor#14265](https://github.com/goharbor/harbor/pull/14265)
+- Previous Discussion: [goharbor/harbor#6534](https://github.com/goharbor/harbor/issues/6534)
+- Related PR from Others Before: [goharbor/harbor#14265](https://github.com/goharbor/harbor/pull/14265)
 
 ## Abstract
 
-Implement Database interface, so that Harbor can support multiple type of Database.
+Propose to support other databases in Harbor, the first step is to support MySQL/MariaDB. This proposal introduces an abstract DAO layer in Harbor, different database can have their drivers to implement the interface. So that Harbor can adapt to other databases as long as a well tested database driver provided.
 
-MariaDB/MySQL will be supported and tested at first. Other type of Database like Oracle, SQLServer are welcomed to support by community.
 
 ## Background
 
-There are many issues discussing the requirement for Harbor supporting multiple type of database in community.
-
-Currently, only PostgreSQL is supported by Harbor. For maintenance perspective, there are certain amount of users are more familiar with MariaDB/MySQL. They prefer to use MariaDB/MySQL instead of PostgreSQL to keep there production environment stable.
+As previous discussion([goharbor/harbor#6534](https://github.com/goharbor/harbor/issues/6534)) shown, there are certain amount of users(especially in China) lack the experiences of maintaining PostgreSQL for HA, disaster recovery, etc. And meanwhile they are more familiar with other databases such as MySQL/MariaDB. They prefer to use MariaDB/MySQL instead of PostgreSQL to keep their production environments stable.
 
 As we all know that Harbor used MySQL before. But scanner clair use PostgreSQL as database. In order to keep consistency with clair and reduce maintenance difficulties. Harbor unified database using PostgreSQL.
 
-Since Harbor v2.0 use trivy as default scanner instead of clair，there's no strongly requirement to use PostgreSQL anymore. Therefore, it is possible to adapt multiple kind of database now.
+Since Harbor v2.0 use trivy as default scanner instead of clair，there's no strongly requirement to use PostgreSQL anymore. Therefore, it is possible to adapt different kind of database now.
 
 ## Proposal
 
-Implement Database interface to support MariaDB/MySQL.
+Support other databases in Harbor other than PostgreSQL.
 
 ### Goals
 
 - Keep using PostgreSQL as default database. The Implementation will be compatible with current version of Harbor.
-- Abstract DAO layer for different type of databases, modify raw SQL in code if necessary.
-- Verify compatibility for mariaDB 10.5.9 / MySQL 8.0.
-- Provide migration tool or guide for users to migrate data from PostgreSQL to mariaDB/MySQL.
+- Abstract DAO layer for different type of databases.
+- Support MariaDB(10.5.9), MySQL(8.0) by implementing corresponding drivers and resolving sql compatibility.
+- Provide migration tool or guide for users to migrate data from PostgreSQL to MariaDB/MySQL.
 
 ### Non-Goals
 
-- Support other type of database. It will be supported in later version.
+- Support other type of database, such as MongoDB, Oracle.
 - Implement Mariadb/MySQL operator for internal database case.
 
 ## Implementation
 
 ### Overview
+
 
 ![overview.png](images/multidb/overview.png)
 

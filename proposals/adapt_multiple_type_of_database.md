@@ -321,6 +321,47 @@ make/photon/prepare/templates/notary/server-config.mysql.json.jinja
 3. Transfer postgreSQL data model to MariaDB/MySQL data model.
 4. Write data to MariaDB/MySQL database
 
+We define Migrator interface for different type of database to migrate.
+For every data table, for example, here we will migrate data for table Access.
+We define AccessMigrator interface to dump and insert data.
+Then, we will implement Dump() function to read data from PostgreSQL.
+By implement Insert() function. we will transfer data model and insert data model to MySQL.
+
+```
+type Migrator interface {
+	Migrate(dbType string) error
+}
+
+type AccessMigrator interface {
+    Dump() ([]*dao.Access, error)
+    Insert([]*dao.Access) error
+}
+
+type AccessMigrators map[string]AccessMigrator
+
+func (a AccessMigrators) Migrate(dbType string) error {
+	data, err := a[dbType].Dump()
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	err = a[dbType].Insert(data)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	return nil
+}
+
+func (a *Access) Dump() ([]*dao.Access, error) {
+    ...
+}
+
+func (a *Access) Insert(objs []*dao.Access) error {
+    ...
+}
+```
+
 ### Database Compatibility Testing
 
 **MySQL 8.0**
